@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/m3u8-parent.iml" filepath="$PROJECT_DIR$/m3u8-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parser/m3u8parser.iml" filepath="$PROJECT_DIR$/parser/m3u8parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/application/m3u8parser-application.iml" filepath="$PROJECT_DIR$/application/m3u8parser-application.iml" />
+    </modules>
+  </component>
+</project>
+
