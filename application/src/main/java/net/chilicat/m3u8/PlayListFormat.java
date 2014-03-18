@@ -14,7 +14,7 @@ class PlaylistFormat {
     }
 
     public String format() {
-        StringBuffer buf = new StringBuffer(100);
+        StringBuilder buf = new StringBuilder(100);
 
         String NEW_LINE = "\n";
         String ELEMENT = "\n\t";

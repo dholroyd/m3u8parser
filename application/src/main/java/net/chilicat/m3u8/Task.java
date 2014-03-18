@@ -3,8 +3,8 @@ package net.chilicat.m3u8;
 import javax.swing.*;
 
 /**
-* @author dkuffner
-*/
+ * @author dkuffner
+ */
 abstract class Task<T> implements Runnable {
     public final void run() {
         final T value;

@@ -47,7 +47,7 @@ class PlaylistTestWindow extends javax.swing.JFrame {
      * Creates new form PlaylistTestWindow
      */
     public PlaylistTestWindow() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(500, 500);
         protocolBox = new JLabel("URL:");
 
@@ -102,7 +102,7 @@ class PlaylistTestWindow extends javax.swing.JFrame {
         if (res == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = chooser.getSelectedFile().getAbsoluteFile();
-                pathField.setText(file.toURL().toString());
+                pathField.setText(file.toURI().toURL().toString());
             } catch (MalformedURLException e1) {
                 log.log(Level.SEVERE, "", e1);
             }
@@ -150,12 +150,7 @@ class PlaylistTestWindow extends javax.swing.JFrame {
 
         @Override
         public void success(Playlist playlist) {
-            StringWriter str = new StringWriter(100);
-            PrintWriter pwriter = new PrintWriter(str);
-
-            new PlaylistFormat(playlist).format(pwriter);
-
-            output.setText(str.toString());
+            output.setText(new PlaylistFormat(playlist).format());
         }
 
         @Override

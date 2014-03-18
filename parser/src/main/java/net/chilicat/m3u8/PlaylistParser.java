@@ -51,7 +51,7 @@ final class PlaylistParser {
         boolean firstLine = true;
 
         int lineNumber = 0;
-                          
+
         final List<Element> elements = new ArrayList<Element>(10);
         final ElementBuilder builder = new ElementBuilder();
         boolean endListSet = false;
@@ -85,10 +85,14 @@ final class PlaylistParser {
                     } else if (line.startsWith(EXT_X_PROGRAM_DATE_TIME)) {
                         long programDateTime = parseProgramDateTime(line, lineNumber);
                         builder.programDate(programDateTime);
+                    } else if (line.startsWith(EXT_X_STREAM_INF)) {
+                        if (!parsePlayListInfo(builder, line)) {
+                            throw new ParseException(line, lineNumber, "Failed to parse EXT-X-STREAM-INF element");
+                        }
                     } else if (line.startsWith(EXT_X_KEY)) {
                         currentEncryption = parseEncryption(line, lineNumber);
                     } else {
-                        log.log(Level.FINE, new StringBuilder().append("Unknown: '").append(line).append("'").toString());
+                        log.log(Level.FINE, "Unknown: '" + line + "'");
                     }
                 } else if (line.startsWith(COMMENT_PREFIX)) {
                     // no first line check because comments will be ignored.
@@ -117,6 +121,60 @@ final class PlaylistParser {
 
         return new Playlist(Collections.unmodifiableList(elements), endListSet, targetDuration, mediaSequenceNumber);
     }
+
+    private boolean parsePlayListInfo(ElementBuilder builder, String line) {
+        int programId = -1;
+        int bandWidth = -1;
+        String codec = "";
+        String attributesList = line.substring(line.indexOf(":"));
+
+        // Iterate through the attributes string, chopping it down until we have all the values
+        try {
+            while (attributesList.length() > 0) {
+                // Skip the initial : or the last delimiting comma
+                attributesList = attributesList.substring(1);
+                String name = attributesList.substring(0, attributesList.indexOf('='));
+                int indexOfEquals = attributesList.indexOf('=');
+                attributesList = attributesList.substring(indexOfEquals + 1);
+                String value;
+
+                if (attributesList.charAt(0) == '"') {
+                    // String component.
+                    // Skip the initial "
+                    attributesList = attributesList.substring(1);
+                    int indexOfQuote = attributesList.indexOf('"');
+                    value = attributesList.substring(0, indexOfQuote);
+                    attributesList = attributesList.substring(indexOfQuote + 1);
+                } else {
+                    int indexOfComma = attributesList.indexOf(',');
+                    indexOfComma = indexOfComma != -1 ? indexOfComma : attributesList.length();
+                    value = attributesList.substring(0, indexOfComma);
+                    attributesList = attributesList.substring(indexOfComma);
+                }
+
+                // Check to see whether our kvp is important to us
+
+                if (name.contentEquals(PROGRAM_ID)) {
+                    programId = Integer.parseInt(value);
+                } else if (name.contentEquals(CODECS)) {
+                    codec = value;
+                } else if (name.contentEquals(BANDWIDTH)) {
+                    bandWidth = Integer.parseInt(value);
+                } else {
+                    log.fine("Unhandled STREAM-INF attribute " + name + " " + value);
+                }
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+
+        builder.playList(programId, bandWidth, codec);
+
+        return true;
+    }
+
 
     private URI toURI(String line) {
         try {

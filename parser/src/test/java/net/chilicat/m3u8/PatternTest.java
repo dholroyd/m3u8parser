@@ -2,6 +2,9 @@ package net.chilicat.m3u8;
 
 import junit.framework.TestCase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,20 +12,20 @@ import java.util.regex.Pattern;
  * @author dkuffner
  */
 public class PatternTest extends TestCase {
-    public void testEmpty() {
 
-    }
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     public void testDateTime() throws Exception {
-        String line = "#EXT-X-PROGRAM-DATE-TIME:2009-12-30T12:10:01+0100"; //"#EXT-X-PROGRAM-DATE-TIME:2001-01-01 10:15:30  ";
-        M3uConstants.Patterns.toDate(line, 0);
-    }
+        String line = "#EXT-X-PROGRAM-DATE-TIME:2009-12-30T12:10:01+0100";
+        long date = M3uConstants.Patterns.toDate(line, 0);
+        Date expected = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse("2009-12-30T12:10:01+0100");
+        assertEquals(expected.getTime(), date);
 
+    }
 
     public void testEXT_KEY() throws Exception {
-        System.out.println(M3uConstants.Patterns.EXT_X_KEY.pattern());
+        assertNotNull(M3uConstants.Patterns.EXT_X_KEY.pattern());
     }
-
 
     public void testEXTINF_NO_MATCH() throws Exception {
         // not matching:
@@ -37,10 +40,9 @@ public class PatternTest extends TestCase {
 
         int index = 0;
         for (String param : list) {
-            System.out.println("Process: '" + param + "'");
+            log.info("Process: '" + param + "'");
             Matcher matcher = patter.matcher(param);
 
-            matcher.find();
             printGroups(index, matcher);
 
             // assertEquals("Index: " + index, true, matcher.find());
@@ -61,7 +63,7 @@ public class PatternTest extends TestCase {
 
         int index = 0;
         for (String param : list) {
-            System.out.println("Process: '" + param + "'");
+            log.info("Process: '" + param + "'");
             Matcher matcher = patter.matcher(param);
             assertEquals("Index: " + index, true, matcher.find());
             assertEquals("Index: " + index, true, matcher.matches());
@@ -76,13 +78,13 @@ public class PatternTest extends TestCase {
 
     private void printGroups(int index, Matcher matcher) {
         if (matcher.find()) {
-            System.out.println("Pattern: " + matcher.pattern());
-            System.out.println("Group count: " + matcher.groupCount());
+            log.info("Pattern: " + matcher.pattern());
+            log.info("Group count: " + matcher.groupCount());
             for (int i = 0; i < matcher.groupCount(); i++) {
-                System.out.println("\t" + index + ":" + i + " '" + matcher.group(i) + "'");
+                log.info("\t" + index + ":" + i + " '" + matcher.group(i) + "'");
             }
         } else {
-            System.out.println("No matches");
+            log.info("No matches");
         }
     }
 
