@@ -4,14 +4,14 @@
     <groupId>net.chilicat.m3u8</groupId>
     <artifactId>m3u8parser-application</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
+    <version>0.2</version>
     <name>m3u8-application</name>
     <url>http://m3u8parser.chilicat.net/</url>
     <dependencies>
         <dependency>
             <groupId>net.chilicat.m3u8</groupId>
             <artifactId>m3u8parser</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
     </dependencies>
 
