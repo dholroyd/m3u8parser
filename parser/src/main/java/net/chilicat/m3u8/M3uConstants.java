@@ -191,7 +191,7 @@ final class M3uConstants {
 
         // YYYY-MM-DDThh:mm:ss
         final static Pattern EXT_X_PROGRAM_DATE_TIME = Pattern.compile(tagPattern(M3uConstants.EXT_X_PROGRAM_DATE_TIME)
-                + "(.*)");
+                + "([^.]*)(\\.[0-9]+)?(.*)");  // second group is a hack to ignore any millisecond component
         // YYYY       MM                 DD                    hh              mm              ss
 
 
@@ -210,9 +210,8 @@ final class M3uConstants {
                 throw new ParseException(line, lineNumber, " must specify date-time");
             }
 
-            SimpleDateFormat ISO8601FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-            System.out.println(ISO8601FORMAT.format(new Date()));
-            String dateTime = matcher.group(1);
+            SimpleDateFormat ISO8601FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+            String dateTime = matcher.group(1)+matcher.group(3);
             try {
                 return ISO8601FORMAT.parse(dateTime).getTime();
             } catch (java.text.ParseException e) {
