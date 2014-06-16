@@ -126,6 +126,7 @@ final class PlaylistParser {
         int programId = -1;
         int bandWidth = -1;
         String codec = "";
+	String resolution = null;
         String attributesList = line.substring(line.indexOf(":"));
 
         // Iterate through the attributes string, chopping it down until we have all the values
@@ -160,6 +161,8 @@ final class PlaylistParser {
                     codec = value;
                 } else if (name.contentEquals(BANDWIDTH)) {
                     bandWidth = Integer.parseInt(value);
+                } else if (name.contentEquals(RESOLUTION)) {
+                    resolution = value;
                 } else {
                     log.fine("Unhandled STREAM-INF attribute " + name + " " + value);
                 }
@@ -170,7 +173,7 @@ final class PlaylistParser {
             return false;
         }
 
-        builder.playList(programId, bandWidth, codec);
+        builder.playList(programId, bandWidth, codec, resolution);
 
         return true;
     }

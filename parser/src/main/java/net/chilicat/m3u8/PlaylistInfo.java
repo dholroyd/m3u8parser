@@ -9,4 +9,6 @@ public interface PlaylistInfo {
     public int getBandWitdh();
 
     public String getCodecs();
+
+    public String getResolution();
 }

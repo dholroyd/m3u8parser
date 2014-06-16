@@ -53,8 +53,8 @@ class ElementBuilder {
         return this;
     }
 
-    public ElementBuilder playList(final int programId, final int bandWidth, final String codec) {
-        this.playlistInfo = new ElementImpl.PlaylistInfoImpl(programId, bandWidth, codec);
+    public ElementBuilder playList(final int programId, final int bandWidth, final String codec, final String resolution) {
+        this.playlistInfo = new ElementImpl.PlaylistInfoImpl(programId, bandWidth, codec, resolution);
         return this;
     }
 

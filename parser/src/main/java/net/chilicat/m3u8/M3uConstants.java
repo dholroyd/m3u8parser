@@ -135,6 +135,13 @@ final class M3uConstants {
     final static String CODECS = "CODECS";
 
     /**
+     *  EXT-X-STREAM-INF
+     *
+     *  RESOLUTION=WWWxHHH
+     */
+    final static String RESOLUTION = "RESOLUTION";
+
+    /**
      * The EXT-X-ENDLIST tag indicates that no more media files will be
      * added to the Playlist file.
      */
