@@ -23,6 +23,7 @@ http://media.example.com/second2.ts
 ./Weird Al - This Is The Life.mp3
 #EXTINF:129,Weird Al: Bad Hair Day - Gump
 http://www.site.com/~user/gump.mp3
+#EXT-X-MEDIA-SEQUENCE: 111
 #EXTINF:-1 , My Cool Stream
 http://www.site.com:8000/listen.pls
 

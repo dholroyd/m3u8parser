@@ -54,16 +54,14 @@ public final class Playlist implements Iterable<Element> {
     private final List<Element> elements;
     private final boolean endSet;
     private final int targetDuration;
-    private int mediaSequenceNumber;
 
-    Playlist(List<Element> elements, boolean endSet, int targetDuration, int mediaSequenceNumber) {
+    Playlist(List<Element> elements, boolean endSet, int targetDuration) {
         if (elements == null) {
             throw new NullPointerException("elements");
         }
         this.targetDuration = targetDuration;
         this.elements = elements;
         this.endSet = endSet;
-        this.mediaSequenceNumber = mediaSequenceNumber;
     }
 
     public int getTargetDuration() {
@@ -82,17 +80,12 @@ public final class Playlist implements Iterable<Element> {
         return endSet;
     }
 
-    public int getMediaSequenceNumber() {
-        return mediaSequenceNumber;
-    }
-
     @Override
     public String toString() {
         return "PlayListImpl{" +
                 "elements=" + elements +
                 ", endSet=" + endSet +
                 ", targetDuration=" + targetDuration +
-                ", mediaSequenceNumber=" + mediaSequenceNumber +
                 '}';
     }
 }

@@ -9,6 +9,8 @@ import java.net.URI;
  */
 public interface Element {
 
+    public long getMediaSequence();
+
     public String getTitle();
 
 

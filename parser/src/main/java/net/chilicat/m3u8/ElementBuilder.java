@@ -6,6 +6,7 @@ import java.net.URI;
  * @author dkuffner
  */
 class ElementBuilder {
+    private long mediaSequence;
     private int duration;
     private URI uri;
     private PlaylistInfo playlistInfo;
@@ -15,6 +16,15 @@ class ElementBuilder {
 
     public ElementBuilder() {
 
+    }
+
+    public long mediaSequence() {
+        return mediaSequence;
+    }
+
+    public ElementBuilder mediaSequence(long mediaSequence) {
+        this.mediaSequence = mediaSequence;
+        return this;
     }
 
     public long programDate() {
@@ -90,7 +100,7 @@ class ElementBuilder {
     }
 
     public Element create() {
-        return new ElementImpl(playlistInfo, encryptionInfo, duration, uri, title, programDate);
+        return new ElementImpl(mediaSequence, playlistInfo, encryptionInfo, duration, uri, title, programDate);
     }
 
 }

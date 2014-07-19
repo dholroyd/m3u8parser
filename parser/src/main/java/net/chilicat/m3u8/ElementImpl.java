@@ -6,6 +6,7 @@ import java.net.URI;
  * @author dkuffner
  */
 final class ElementImpl implements Element {
+    private final long mediaSequence;
     private final PlaylistInfo playlistInfo;
     private final EncryptionInfo encryptionInfo;
     private final int duration;
@@ -13,7 +14,8 @@ final class ElementImpl implements Element {
     private final String title;
     private final long programDate;
 
-    public ElementImpl(PlaylistInfo playlistInfo, EncryptionInfo encryptionInfo, int duration, URI uri, String title, long programDate) {
+    public ElementImpl(long mediaSequence, PlaylistInfo playlistInfo, EncryptionInfo encryptionInfo, int duration, URI uri, String title, long programDate) {
+        this.mediaSequence = mediaSequence;
         if (uri == null) {
             throw new NullPointerException("uri");
         }
@@ -30,6 +32,10 @@ final class ElementImpl implements Element {
         this.uri = uri;
         this.title = title;
         this.programDate = programDate;
+    }
+
+    public long getMediaSequence() {
+        return mediaSequence;
     }
 
     public String getTitle() {

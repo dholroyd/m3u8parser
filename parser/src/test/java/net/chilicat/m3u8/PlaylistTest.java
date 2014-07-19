@@ -40,6 +40,8 @@ public class PlaylistTest extends TestCase {
             Playlist playList = Playlist.parse(in);
             assertNotNull(playList);
             assertEquals(7, playList.getElements().size());
+            assertEquals(1, playList.getElements().get(0).getMediaSequence());
+            assertEquals(111, playList.getElements().get(playList.getElements().size()-1).getMediaSequence());
         } finally {
             in.close();
         }

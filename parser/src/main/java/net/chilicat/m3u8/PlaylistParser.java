@@ -56,7 +56,7 @@ final class PlaylistParser {
         final ElementBuilder builder = new ElementBuilder();
         boolean endListSet = false;
         int targetDuration = -1;
-        int mediaSequenceNumber = -1;
+        int mediaSequenceNumber = 1;
 
         EncryptionInfo currentEncryption = null;
 
@@ -78,9 +78,6 @@ final class PlaylistParser {
                         }
                         targetDuration = parseTargetDuration(line, lineNumber);
                     } else if (line.startsWith(EXT_X_MEDIA_SEQUENCE)) {
-                        if (mediaSequenceNumber != -1) {
-                            throw new ParseException(line, lineNumber, EXT_X_MEDIA_SEQUENCE + " duplicated");
-                        }
                         mediaSequenceNumber = parseMediaSequence(line, lineNumber);
                     } else if (line.startsWith(EXT_X_PROGRAM_DATE_TIME)) {
                         long programDateTime = parseProgramDateTime(line, lineNumber);
@@ -106,10 +103,12 @@ final class PlaylistParser {
                     }
 
                     // No prefix: must be the media uri.
+                    builder.mediaSequence(mediaSequenceNumber);
                     builder.encrypted(currentEncryption);
 
                     builder.uri(toURI(line));
                     elements.add(builder.create());
+                    mediaSequenceNumber++;
 
                     // a new element begins.
                     builder.reset();
@@ -119,7 +118,7 @@ final class PlaylistParser {
             lineNumber++;
         }
 
-        return new Playlist(Collections.unmodifiableList(elements), endListSet, targetDuration, mediaSequenceNumber);
+        return new Playlist(Collections.unmodifiableList(elements), endListSet, targetDuration);
     }
 
     private boolean parsePlayListInfo(ElementBuilder builder, String line) {
@@ -234,7 +233,7 @@ final class PlaylistParser {
         try {
             builder.duration(Integer.valueOf(duration)).title(title);
         } catch (NumberFormatException e) {
-            // should not happen because of 
+            // should not happen because of
             throw new ParseException(line, lineNumber, e);
         }
     }
